@@ -5,19 +5,27 @@
 local goState = Gamestate.new()
 
 --libraries
-local Col = require "entities.collisionCircle"
+local BeastSchool = require "entities.beastSchool"
 
-local testSphere = Col(25, Vector(300,300), {0,255,0,200}) 
+local school = BeastSchool()
+local startingSize = 5
+local startingCarrying = 2
 
 function goState:init()
 	
 end
 
+function goState:enter(prevState)
+	school:initGenerationZero(startingSize, startingCarrying)
+end
+
 function goState:update(dt)
+	school:update(dt)
 end
 
 function goState:draw()
-		testSphere:draw()
+	love.graphics.setColor({255,255,255,255})
+	school:draw()
 end
 
 function goState:mousePressed(x, y, button)
