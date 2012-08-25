@@ -34,6 +34,14 @@ function beast:sLocation(loc)
 	self.body.location = loc
 end
 
+function beast:isCarrying()
+	return not(self.allele1 and self.allele2)
+end
+
+function beast:isOmnicidal()
+	return not(self.allele1 or self.allele2)
+end
+
 function beast:gRed()
 	return self.body.rgba[1]
 end
@@ -63,6 +71,10 @@ end
 
 function beast:collisionTest(otherBeast)
 	return self.body:test(otherBeast.body)
+end
+
+function beast:collisionWave(waveBody)
+	return not(self:isOmnicidal()) and self.body:test(waveBody)
 end
 
 function beast:newDestination()

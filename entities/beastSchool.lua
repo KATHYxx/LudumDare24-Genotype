@@ -16,6 +16,15 @@ function beastSchool:gNewAttack()
 	return Vector(self.newAttack.x, self.newAttack.y)
 end
 
+function beastSchool:reset()
+	self.school = {}
+	self.newAttack = Vector(-1,-1)
+end
+
+function beastSchool:remove(index)
+	table.remove(self.school, index)
+end
+
 function beastSchool:checkBoundary(beast) --keeps a beast inside game bounds
 	local loc = beast:gLocation()
 	if(loc.x < 0) then

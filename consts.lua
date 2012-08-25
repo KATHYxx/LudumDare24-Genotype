@@ -19,9 +19,9 @@ consts.BEAST_HEALTH = 10
 
 --death waves
 consts.DEATH_RADIUS = 20        -- starting collision radius of the attack
-consts.DEATH_MAX_RADIUS = 500   -- ending radius of attack
+consts.DEATH_MAX_RADIUS = 200   -- ending radius of attack
 consts.EYE_RADIUS = 15          -- starting eye of the attack radius (safety)
-consts.EYE_MAX_RADIUS = 450      -- ending eye of the attack radius (safety)
+consts.EYE_MAX_RADIUS = 150      -- ending eye of the attack radius (safety)
 consts.DEATH_COLOR = {55, 0, 150, 75}
 consts.EYE_COLOR = {40, 20, 100, 40}
 consts.WAVE_FADE = 1            --seconds in time that the attack wave lasts 

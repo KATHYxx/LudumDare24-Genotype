@@ -18,6 +18,7 @@ function goState:init()
 end
 
 function goState:enter(prevState)
+	school:reset()
 	school:initGenerationZero(startingSize, startingCarrying)
 	ammo:reset()
 end
@@ -26,6 +27,18 @@ function goState:update(dt)
 	school:update(dt)
 	ammo:addWave(school:gNewAttack())
 	ammo:update(dt)
+
+	--death checks
+	local deathMark = -1
+	for j=1, #school.school do
+		if(ammo:checkHit(school.school[j])) then
+			deathMark = j
+			break
+		end
+	end
+	if(deathMark > 0) then
+		school:remove(deathMark)
+	end
 end
 
 function goState:draw()

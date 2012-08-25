@@ -4,6 +4,7 @@
 
 local Class = require "hump.class"
 local DeathWave = require "entities.deathWave"
+local Beast = require "entities.beast"
 local consts = require "consts"
 
 local liveAmmo = Class( --constructor
@@ -41,4 +42,20 @@ function liveAmmo:draw()
 	end
 end
 
+function liveAmmo:checkHit(oBeast)
+	for i=1, #self.ammo do
+		if(oBeast:collisionWave(self.ammo[i].body)) then
+			return true
+		end
+	end
+	return false
+end
+
 return liveAmmo
+
+
+
+
+
+
+
