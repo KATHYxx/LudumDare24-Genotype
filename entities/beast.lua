@@ -33,12 +33,34 @@ function beast:sLocation(loc)
 	self.body.location = loc
 end
 
+function beast:gRed()
+	return self.body.rgba[1]
+end
+function beast:gGreen()
+	return self.body.rgba[2]
+end
+function beast:gBlue()
+	return self.body.rgba[3]
+end
+function beast:gAlpha()
+	return self.body.rgba[4]
+end
+
+function beast:ready()
+	return (self.age - self.ageLastAction) > consts.COOLOFF
+end
+
 function beast:passGene()  --randomly returns one of its alleles, with equal probability
 	if (math.random() > .5) then
 		return self.allele1
 	else
 		return self.allele2
 	end 
+	self.ageLastAction = self.age
+end
+
+function beast:collisionTest(otherBeast)
+	return self.body:test(otherBeast.body)
 end
 
 function beast:newDestination()
@@ -47,6 +69,7 @@ function beast:newDestination()
 		self.stepLocat.x + math.random()*consts.DIST_RANGE - consts.DIST_RANGE/2    ,
 		self.stepLocat.y + math.random()*consts.DIST_RANGE - consts.DIST_RANGE/2
 	)
+	-- TODO improve randomness so everyone isn't always on the edges
 	self.stepProgress = 0
 end
 
@@ -62,6 +85,7 @@ function beast:update(dt)
 		self:newDestination()
 	end
 	self:interpMove()
+	self.age = self.age + dt
 end
 
 function beast:draw()

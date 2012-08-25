@@ -25,8 +25,33 @@ function beastSchool:checkBoundary(beast) --keeps a beast inside game bounds
 	elseif(loc.y > consts.SCREEN.y) then
 		beast:sLocation(Vector(loc.x,0))
 	end
+end
 
-	--did i really want to do that? I forget if lua is pass by reference or value TODO
+function beastSchool:mack(parent1, parent2)
+	table.insert(self.school, Beast(
+					Vector(
+						(parent1:gLocation().x+parent2:gLocation().x)/2, 
+						(parent1:gLocation().y+parent2:gLocation().y)/2),
+					{(parent1:gRed()+parent2:gRed())/2, (parent1:gGreen()+parent2:gGreen())/2,
+						(parent1:gBlue()+parent2:gBlue())/2, (parent1:gAlpha()+parent2:gAlpha())/2},
+					parent1:passGene(),
+					parent2:passGene()
+			)
+	) 
+end
+
+function beastSchool:mackTest()
+	local i = 1
+	local j = 1
+	for i = 1, #self.school do
+		for j = i+1, #self.school do
+			if(self.school[i]:ready() and self.school[j]:ready() and 
+			   self.school[i]:collisionTest(self.school[j])) then
+				self:mack(self.school[i], self.school[j])
+				break
+			end
+		end
+	end
 end
 
 function beastSchool:initGenerationZero(numPopulation, numCarrying)
@@ -41,16 +66,25 @@ function beastSchool:initGenerationZero(numPopulation, numCarrying)
 		end
 		table.insert(self.school, Beast(
 				Vector(math.random()*consts.SCREEN.x, math.random()*consts.SCREEN.y),
-				color,
+				{color[1], color[2], color[3], color[4]},
 				all1, all2
 		))
-		color[1] = color[2]
-		color[2] = color[3]
+		if (math.random() > .5) then 
+			color[1] = 0
+		else
+			color[1] = 200
+		end
+		if (math.random() > .5) then 
+			color[2] = 0
+		else
+			color[2] = 200
+		end
 		if (math.random() > .5) then 
 			color[3] = 0
 		else
 			color[3] = 200
 		end
+
 		--TODO preditable color exploit fix here. Do colors better
 	end
 end
@@ -60,9 +94,12 @@ function beastSchool:update(dt)
 	local i =1 
 	for i = 1, #self.school do
 		self.school[i]:update(dt)  --update
-		--check for collisions and boundary exits
+		--check for boundary exits
 		self:checkBoundary(self.school[i])
 	end
+	
+	--collision check
+	self:mackTest()
 end
 
 

@@ -8,11 +8,11 @@ local goState = Gamestate.new()
 local BeastSchool = require "entities.beastSchool"
 
 local school = BeastSchool()
-local startingSize = 5
-local startingCarrying = 2
+local startingSize = 6 
+local startingCarrying = 2 
 
 function goState:init()
-	
+	math.randomseed(os.time())	
 end
 
 function goState:enter(prevState)
