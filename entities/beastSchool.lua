@@ -8,22 +8,27 @@ local consts = require "consts"
 local beastSchool = Class( --  constructor
 		function(self)
 			self.school = {}
+			self.newAttack = Vector(-1,-1) --attacks with negatives are not new attacks
 		end
 )
+
+function beastSchool:gNewAttack()
+	return Vector(self.newAttack.x, self.newAttack.y)
+end
 
 function beastSchool:checkBoundary(beast) --keeps a beast inside game bounds
 	local loc = beast:gLocation()
 	if(loc.x < 0) then
-		beast:sLocation(Vector(consts.SCREEN.x, loc.y))
+		beast:sLocation(Vector(consts.SCREEN.x+loc.x, loc.y))
 	elseif(loc.x > consts.SCREEN.x) then
-		beast:sLocation(Vector(0, loc.y))	
+		beast:sLocation(Vector(consts.SCREEN.x-loc.x, loc.y))	
 	end
 
 	loc = beast:gLocation()
 	if(loc.y < 0) then
-		beast:sLocation(Vector(loc.x, consts.SCREEN.y))
+		beast:sLocation(Vector(loc.x, consts.SCREEN.y+loc.y))
 	elseif(loc.y > consts.SCREEN.y) then
-		beast:sLocation(Vector(loc.x,0))
+		beast:sLocation(Vector(loc.x,consts.SCREEN.y-loc.y))
 	end
 end
 
@@ -57,7 +62,7 @@ end
 function beastSchool:initGenerationZero(numPopulation, numCarrying)
 	local color = {0, 200, 0, 255}
 	local all1 = true
-	local all2 = true
+	local all2 = false
 	local i =1 
 
 	for i = 1, numPopulation do
@@ -91,9 +96,12 @@ end
 
 function beastSchool:update(dt)
 	--update all beasts in list
+	self.newAttack = Vector(-1,-1) 
 	local i =1 
 	for i = 1, #self.school do
-		self.school[i]:update(dt)  --update
+		if(self.school[i]:update(dt)) then --update
+			self.newAttack = self.school[i]:gLocation()
+		end
 		--check for boundary exits
 		self:checkBoundary(self.school[i])
 	end

@@ -17,11 +17,12 @@ local beast = Class(  --constructor
 			self.stepLocat = location -- original location of movement
 			self.stepProgress = math.random()  -- [0,1] progress between stepLocat and destination
 			
-			self.health = 10  --basic life
+			self.health = consts.BEAST_HEALTH  --basic life
 			self.allele1 = allele1
 			self.allele2 = allele2
 			self.age = 0
-			self.ageLastAction = 0 --this measures a cooloff period between doing something
+			self.ageLastAction = consts.PRE_AGE --this measures a cooloff period between doing something
+			self.ageLastFire = consts.PRE_AGE --this measures a cooloff period between doing something
 		end
 )
 
@@ -47,16 +48,16 @@ function beast:gAlpha()
 end
 
 function beast:ready()
-	return (self.age - self.ageLastAction) > consts.COOLOFF
+	return ((self.age - self.ageLastAction) > consts.COOLOFF) 
 end
 
 function beast:passGene()  --randomly returns one of its alleles, with equal probability
 	self.ageLastAction = self.age
 
 	if (math.random() > .5) then
-		return self.allele1
-	else
 		return self.allele2
+	else
+		return self.allele1
 	end 
 end
 
@@ -78,8 +79,12 @@ function beast:interpMove()
 	--interpolation with Ease Out movement. This moves the location of the creature
 	self.body.location = self.stepLocat + ((self.stepProgress^.5) * (self.destination-self.stepLocat))
 end
+
+function beast:fireWeapon()  --doesnt actually fire the weapon
+	self.ageLastFire = self.age
+end
 			
-function beast:update(dt)
+function beast:update(dt)  --returns true if a weapon fired
 	--movement 
 	self.stepProgress = self.stepProgress + dt/consts.SPEED
 	if(self.stepProgress >= 1) then
@@ -87,6 +92,15 @@ function beast:update(dt)
 	end
 	self:interpMove()
 	self.age = self.age + dt
+
+	--omnicide check
+	if((not(self.allele1 or self.allele2 ) )  and (self.age > consts.RAGE_AGE)    
+	    and ((self.age-self.ageLastFire) > consts.WEAPON_COOL) ) then
+		self:fireWeapon()
+		return true
+	end
+
+	return false
 end
 
 function beast:draw()
