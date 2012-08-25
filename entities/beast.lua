@@ -51,12 +51,13 @@ function beast:ready()
 end
 
 function beast:passGene()  --randomly returns one of its alleles, with equal probability
+	self.ageLastAction = self.age
+
 	if (math.random() > .5) then
 		return self.allele1
 	else
 		return self.allele2
 	end 
-	self.ageLastAction = self.age
 end
 
 function beast:collisionTest(otherBeast)

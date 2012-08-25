@@ -27,15 +27,15 @@ function beastSchool:checkBoundary(beast) --keeps a beast inside game bounds
 	end
 end
 
-function beastSchool:mack(parent1, parent2)
+function beastSchool:mack(p1, p2)  --two parents with index p1 and p2 make babby
 	table.insert(self.school, Beast(
 					Vector(
-						(parent1:gLocation().x+parent2:gLocation().x)/2, 
-						(parent1:gLocation().y+parent2:gLocation().y)/2),
-					{(parent1:gRed()+parent2:gRed())/2, (parent1:gGreen()+parent2:gGreen())/2,
-						(parent1:gBlue()+parent2:gBlue())/2, (parent1:gAlpha()+parent2:gAlpha())/2},
-					parent1:passGene(),
-					parent2:passGene()
+						(self.school[p1]:gLocation().x+self.school[p2]:gLocation().x)/2, 
+						(self.school[p1]:gLocation().y+self.school[p2]:gLocation().y)/2),
+					{(self.school[p1]:gRed()+self.school[p2]:gRed())/2, (self.school[p1]:gGreen()+self.school[p2]:gGreen())/2,
+						(self.school[p1]:gBlue()+self.school[p2]:gBlue())/2, (self.school[p1]:gAlpha()+self.school[p2]:gAlpha())/2},
+					self.school[p1]:passGene(),
+					self.school[p2]:passGene()
 			)
 	) 
 end
@@ -47,8 +47,8 @@ function beastSchool:mackTest()
 		for j = i+1, #self.school do
 			if(self.school[i]:ready() and self.school[j]:ready() and 
 			   self.school[i]:collisionTest(self.school[j])) then
-				self:mack(self.school[i], self.school[j])
-				break
+				self:mack(i, j)
+				return
 			end
 		end
 	end
