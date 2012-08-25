@@ -55,6 +55,10 @@ function beast:gAlpha()
 	return self.body.rgba[4]
 end
 
+function beast:horny()
+	return ((self.age - self.ageLastAction) > consts.LONELY_AGE)
+end
+
 function beast:ready()
 	return ((self.age - self.ageLastAction) > consts.COOLOFF) 
 end
@@ -67,6 +71,14 @@ function beast:passGene()  --randomly returns one of its alleles, with equal pro
 	else
 		return self.allele1
 	end 
+end
+
+function beast:assignCarrier()
+	if(math.random() > .5) then
+		self.allele1 = false
+	else
+		self.allele2 = false
+  	end
 end
 
 function beast:collisionTest(otherBeast)
@@ -83,7 +95,12 @@ function beast:newDestination()
 		self.stepLocat.x + math.random()*consts.DIST_RANGE - consts.DIST_RANGE/2    ,
 		self.stepLocat.y + math.random()*consts.DIST_RANGE - consts.DIST_RANGE/2
 	)
-	-- TODO improve randomness so everyone isn't always on the edges
+	self.stepProgress = 0
+end
+
+function beast:setDestination(destination)  --as above, but this time with a specific location in mind
+	self.stepLocat = self.body.location 
+	self.destination = destination
 	self.stepProgress = 0
 end
 

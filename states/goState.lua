@@ -10,8 +10,8 @@ local LiveAmmo = require "entities.liveAmmo"
 
 local school = BeastSchool()
 local ammo = LiveAmmo()
-local startingSize = 6 
-local startingCarrying = 2 
+local startingSize = 3 
+local startingCarrying = 1 
 
 function goState:init()
 	math.randomseed(os.time())	
@@ -23,7 +23,7 @@ function goState:enter(prevState)
 	ammo:reset()
 end
 
-function goState:update(dt)
+function goState:updateGame(dt) --update when the game is not paused or between levels
 	school:update(dt)
 	ammo:addWave(school:gNewAttack())
 	ammo:update(dt)
@@ -39,6 +39,11 @@ function goState:update(dt)
 	if(deathMark > 0) then
 		school:remove(deathMark)
 	end
+
+end
+
+function goState:update(dt)
+	goState:updateGame(dt)	
 end
 
 function goState:draw()

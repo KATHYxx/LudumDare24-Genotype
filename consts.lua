@@ -15,6 +15,7 @@ consts.COOLOFF = 10   --cooloff length (in seconds) between actions taken
 consts.WEAPON_COOL = 3   --cooloff time for weapon firing (for beasts)
 consts.PRE_AGE = -10      --starting "cooldown" at birth
 consts.RAGE_AGE = 5      --age (seconds) at which to go omnicidal
+consts.LONELY_AGE = 20
 consts.BEAST_HEALTH = 10 
 
 --death waves
