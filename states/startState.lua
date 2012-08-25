@@ -20,7 +20,8 @@ function startState:draw()
 	love.graphics.print("state switched good", 400, 300)
 end
 
-function startState:mousereleased(x,y, mouse_btn)
+function startState:mousepressed(x,y, mouse_btn)
+	Gamestate.switch(states.run)  --references globals in main
 end
 
 return startState   --allows loading as a module

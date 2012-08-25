@@ -4,13 +4,20 @@
 
 local goState = Gamestate.new()
 
+--libraries
+local Col = require "entities.collisionCircle"
+
+local testSphere = Col(25, Vector(300,300), {0,255,0,200}) 
+
 function goState:init()
+	
 end
 
 function goState:update(dt)
 end
 
 function goState:draw()
+		testSphere:draw()
 end
 
 function goState:mousePressed(x, y, button)
