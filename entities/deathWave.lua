@@ -6,6 +6,13 @@ local Class = require "hump.class"
 local CollisionCircle = require "entities.collisionCircle"
 local consts = require "consts"
 
+local waveSprite = love.graphics.newImage("assets/wave1.png")
+local eyeSprite = love.graphics.newImage("assets/wave2.png")
+local xOffD = waveSprite:getWidth()/2
+local yOffD = waveSprite:getHeight()/2
+local xOffE = eyeSprite:getWidth()/2
+local yOffE = eyeSprite:getHeight()/2
+
 local deathWave = Class ( --constructor needs originating location
 		function(self, location)  
 			self.body = CollisionCircle(consts.DEATH_RADIUS, location, consts.DEATH_COLOR)
@@ -13,6 +20,14 @@ local deathWave = Class ( --constructor needs originating location
 			self.age = 0
 		end
 )
+
+function deathWave:radiusLerpD(d)
+	return consts.SPRITE_MIN_D + (d)*((consts.SPRITE_MAX_D-consts.SPRITE_MIN_D)/consts.WAVE_FADE)
+end
+
+function deathWave:radiusLerpE(d)
+	return consts.SPRITE_MIN_E + (d)*((consts.SPRITE_MAX_E-consts.SPRITE_MIN_E)/consts.WAVE_FADE)
+end
 
 function deathWave:update(dt)
 	self.age = self.age + dt
@@ -27,10 +42,16 @@ function deathWave:update(dt)
 end
 
 function deathWave:draw()
-	if(consts.DEBUG) then
+	--if(consts.DEBUG) then
 		self.body:draw()
 		self.eye:draw()
-	end
+	--end
+
+	--[[local scaleD = self:radiusLerpD(self.age^.5)
+	local scaleE = self:radiusLerpE(self.age^.5)
+	love.graphics.draw(waveSprite, self.body.location.x-(xOffD/2), self.body.location.y-(yOffD/2), 0, scaleD, scaleD)
+	love.graphics.draw(eyeSprite, self.body.location.x-(xOffE/2), self.body.location.y-(yOffE/2), 0, scaleE, scaleE)
+	]]
 end
 
 return deathWave

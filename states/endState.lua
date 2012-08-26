@@ -24,8 +24,9 @@ function endState:draw()
 
 	love.graphics.setColor(255,255,255,255)
 	love.graphics.draw(endSprite, (consts.SCREEN.x/2), consts.SCREEN.y-650, 1, 3)	
-	love.graphics.print("The good beasts have gone extinct", (consts.SCREEN.x/2)-350, 150, 0, 5, 5)
-	love.graphics.print("Game over", (consts.SCREEN.x/2)-250, 250, 0, 2, 2)
+	love.graphics.print("The good ones", (consts.SCREEN.x/2)-350, 150, 0, 5, 5)
+	love.graphics.print("have gone extinct", (consts.SCREEN.x/2)-250, 250, 0, 5, 5)
+	love.graphics.print("Game over", (consts.SCREEN.x/2)-150, 350, 0, 2, 2)
 end
 
 function endState:mousepressed(x, y, button)

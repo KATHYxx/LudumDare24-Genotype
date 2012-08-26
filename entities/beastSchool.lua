@@ -100,9 +100,11 @@ function beastSchool:initGenerationZero(numPopulation, numCarrying)
 		if(i > numPopulation - numCarrying) then
 			all2 = false
 		end
+		local colorInd = (i%7)
+		if(colorInd == 0) then colorInd = 1 end
 		table.insert(self.school, Beast(
 				Vector(math.random()*consts.SCREEN.x, math.random()*consts.SCREEN.y),
-				startingColors[i],
+				startingColors[colorInd],
 				all1, all2
 		))
 

@@ -8,6 +8,7 @@ consts.SCREEN = Vector(1024, 768)
 consts.DEBUG = false
 consts.STARTING_BEASTS = 3        --number of beasts in a new game, level 1
 consts.STARTING_CARRIERS = 1      --number of omnicide carriers in a new game, level 1
+consts.TIME = {90, 60, 30}
 
 --beasts
 consts.COLRADIUS = 25 -- collision circle radius 
@@ -25,9 +26,13 @@ consts.DEATH_RADIUS = 20        -- starting collision radius of the attack
 consts.DEATH_MAX_RADIUS = 200   -- ending radius of attack
 consts.EYE_RADIUS = 15          -- starting eye of the attack radius (safety)
 consts.EYE_MAX_RADIUS = 150      -- ending eye of the attack radius (safety)
-consts.DEATH_COLOR = {55, 0, 150, 75}
-consts.EYE_COLOR = {40, 20, 100, 40}
+consts.DEATH_COLOR = {55, 0, 150, 240}
+consts.EYE_COLOR = {40, 20, 100, 240}
 consts.WAVE_FADE = 1            --seconds in time that the attack wave lasts 
+consts.SPRITE_MAX_D = .66       --sprite scalars
+consts.SPRITE_MIN_D = .1
+consts.SPRITE_MAX_E = .5
+consts.SPRITE_MIN_E = .1333
 
 --sounds
 consts.HAPPY_VOL = .7

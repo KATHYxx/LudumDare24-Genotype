@@ -20,7 +20,8 @@ local hud = Class(
 			self.population = consts.STARTING_BEASTS
 			self.killedThisLevel = 0
 			self.diedThisLevel = 0
-			
+		
+			self.timer = consts.TIME[1]	
 			self.modeAge = 0    --keeps track of how much time (in seconds) goes by
 		end
 )
@@ -37,6 +38,10 @@ function hud:startNewLevel(nextCarry, nextPop)
 	self.diedThisLevel = 0
 	self.batch = self.batch + 1
 	self.modeAge = 0
+
+	local dd = (math.floor(self.batch/7)+1) % 3
+	if(dd == 0) then dd = 3 end
+	self.timer = consts.TIME[dd]
 end
 
 function hud:startNewGame()
@@ -53,7 +58,8 @@ function hud:startNewGame()
 	self.killedThisLevel = 0
 	self.diedThisLevel = 0
 	
-	self.modeAge = 0  
+	self.modeAge = 0 
+	self.timer = consts.TIME[1] 
 end
 
 function hud:endLevel()
@@ -64,6 +70,11 @@ end
 
 function hud:update(dt)
 	self.modeAge = self.modeAge + dt
+	self.timer = self.timer - dt
+
+	if(self.population == self.carrying or self.timer <= 0) then
+		Gamestate.switch(states.over)
+	end
 end
 
 function hud:drawEndLevel()
@@ -98,6 +109,7 @@ end
 function hud:drawGametime()
 	self:drawStartLevel()
 	love.graphics.print("Population: " .. self.population, 10, 10, 0, 2,2)	
+	love.graphics.print("Time: " .. math.floor(self.timer), consts.SCREEN.x-150, 10, 0, 2,2)	
 	love.graphics.print("Carriers: " .. self.carriers, 10, 40, 0, 2, 2)
 	love.graphics.print("Score: " .. self.score, 10, 70, 0, 2, 2)
 end

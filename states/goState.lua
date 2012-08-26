@@ -23,7 +23,11 @@ local actualStartingSpeed = consts.SPEED
 local flash = false
 
 function goState:init()
-	math.randomseed(os.time())	
+	math.randomseed(os.time())
+	--local moo = 1/7 
+	--print (""..moo)
+
+
 end
 
 function goState:enter(prevState)
@@ -40,7 +44,7 @@ end
 
 function goState:startNewLevel()
 	startingSize = (hud.batch % 7) + 2 
-	startingCarrying = (hud.batch / 7) + 1
+	startingCarrying = math.floor(hud.batch / 7) + 1
 	consts.SPEED = consts.SPEED - .1
 
 	hud:startNewLevel(startingCarrying, startingSize)
@@ -73,7 +77,6 @@ function goState:updateGame(dt) --update when the game is not paused or between 
 		end	
 		if(ammo:checkHit(school.school[j])) then
 			deathMark = j
-			break
 		end
 	end
 	if(deathMark > 0) then
@@ -166,6 +169,7 @@ function goState:mousepressed(x, y, button)
 		hud.killedThisLevel = hud.killedThisLevel + 1
 		self:removeBeast(target)
 		Sound:playHit()
+		Sound:playSad()
 		flash = true
 	end
 end
