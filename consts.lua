@@ -6,6 +6,8 @@ consts.AUTHOR = "Katherine Blizard"
 consts.TITLE = "The Omnicide Genotype"
 consts.SCREEN = Vector(1024, 768)
 consts.DEBUG = true
+consts.STARTING_BEASTS = 3        --number of beasts in a new game, level 1
+consts.STARTING_CARRIERS = 1      --number of omnicide carriers in a new game, level 1
 
 --beasts
 consts.COLRADIUS = 25 -- collision circle radius 
