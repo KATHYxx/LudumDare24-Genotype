@@ -79,6 +79,14 @@ function hud:drawEndLevel()
 		love.graphics.print("Score: ".. self.score, consts.SCREEN.x/2-50, 250, 0, 2, 2 )
 	end
 
+	if(self.modeAge > 1.0 and self.modeAge < 1.1) then
+		Sound:playWin(1)
+	elseif(self.modeAge > 1.0 and self.modeAge < 1.1) then
+		Sound:playWin(2)
+	elseif(self.modeAge > 1.0 and self.modeAge < 1.1) then
+		Sound:playWin(3)
+	end
+
 end
 
 function hud:drawStartLevel()

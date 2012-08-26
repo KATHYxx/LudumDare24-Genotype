@@ -10,10 +10,19 @@ Ludum Dare 24
 
 
 --Globals
---load public libraries
 Gamestate = require "hump.gamestate"
 Camera = require "hump.camera"
 Vector = require "hump.vector"
+
+Sounds = require "entities.sound"
+Sound = Sounds()
+
+BGsprite = {
+        love.graphics.newImage("assets/bg.png"),
+        love.graphics.newImage("assets/bg0.png")
+}
+
+
 --load Gamestates
 states = {}
 states.start = require "states.startState"

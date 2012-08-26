@@ -70,7 +70,9 @@ function beastSchool:mack(p1, p2)  --two parents with index p1 and p2 make babby
 					self.school[p1]:passGene(),
 					self.school[p2]:passGene()
 			)
-	) 
+	)
+
+	Sound:playLove() 
 end
 
 function beastSchool:mackTest()
@@ -127,6 +129,10 @@ function beastSchool:update(dt)
 		end
 		--check for boundary exits
 		self:checkBoundary(self.school[i])
+	end
+
+	if(math.random() < .01) then
+		Sound:playHappy()
 	end
 	
 	--collision check

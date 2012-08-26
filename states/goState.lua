@@ -20,7 +20,7 @@ local hud = Hud()
 local startingSize = 3 
 local startingCarrying = 1 
 local actualStartingSpeed = consts.SPEED
-
+local flash = false
 
 function goState:init()
 	math.randomseed(os.time())	
@@ -34,6 +34,8 @@ function goState:enter(prevState)
 	startingCarrying = consts.STARTING_CARRIERS
 	hud:startNewGame()
 	consts.SPEED = actualStartingSpeed
+
+	Sound:playConfirm()
 end
 
 function goState:startNewLevel()
@@ -44,9 +46,11 @@ function goState:startNewLevel()
 	hud:startNewLevel(startingCarrying, startingSize)
 	hud.isGametime = true
 
+	ammo:reset()
 	school:reset()
 	school:initGenerationZero(startingSize, startingCarrying)
 
+	Sound:playTick()
 end
 
 function goState:removeBeast(index)
@@ -74,6 +78,7 @@ function goState:updateGame(dt) --update when the game is not paused or between 
 	end
 	if(deathMark > 0) then
 		self:removeBeast(deathMark)
+		Sound:playSad()
 	end
 
 	if(hud.carriers == 0 and hud.population > 0) then
@@ -118,11 +123,23 @@ function goState:update(dt)
 end
 
 function goState:draw()
-	love.graphics.setColor({255,255,255,255})
+	love.graphics.setColor({85,85,85,255})
+
+	--background drawn first
+	love.graphics.draw(BGsprite[1], 0, 0)
+	love.graphics.setColor({95,95,95,255})
+	love.graphics.draw(BGsprite[2], 0, 0)
 	
 	if(not hud.isPaused) then
 		school:draw()
 		ammo:draw()
+	end
+
+	if(flash == true) then
+		love.graphics.setColor(255,255,255,200)
+		love.graphics.rectangle("fill", 0,0, consts.SCREEN.x, consts.SCREEN.y)
+		flash = false
+		love.graphics.setColor(255,255,255,255)
 	end
 
 	crosshair:draw()
@@ -132,6 +149,7 @@ end
 
 function goState:mousepressed(x, y, button)
 	local target = -1
+	crosshair:fire()
 
 	if(not hud.isPaused and hud.isGametime) then
 		crosshair:update(0)
@@ -147,6 +165,8 @@ function goState:mousepressed(x, y, button)
 		hud.score = hud.score + 1
 		hud.killedThisLevel = hud.killedThisLevel + 1
 		self:removeBeast(target)
+		Sound:playHit()
+		flash = true
 	end
 end
 

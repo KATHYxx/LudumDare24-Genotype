@@ -7,6 +7,31 @@ local Class = require "hump.class"
 local CollisionCircle = require "entities.collisionCircle"
 local consts = require "consts"
 
+local leftSprite = {
+	love.graphics.newImage("assets/beastsprite/left1.png"),
+	love.graphics.newImage("assets/beastsprite/left2.png"),
+	love.graphics.newImage("assets/beastsprite/left3.png"),
+	love.graphics.newImage("assets/beastsprite/left4.png"),
+	love.graphics.newImage("assets/beastsprite/left5.png"),
+	love.graphics.newImage("assets/beastsprite/left6.png"),
+	love.graphics.newImage("assets/beastsprite/left7.png")
+}
+
+local downSprite = {
+	love.graphics.newImage("assets/beastsprite/down1.png"),
+	love.graphics.newImage("assets/beastsprite/down2.png"),
+	love.graphics.newImage("assets/beastsprite/down3.png"),
+	love.graphics.newImage("assets/beastsprite/down4.png"),
+	love.graphics.newImage("assets/beastsprite/down5.png")
+}
+
+local upSprite = {
+	love.graphics.newImage("assets/beastsprite/Up1.png"),
+	love.graphics.newImage("assets/beastsprite/Up2.png"),
+	love.graphics.newImage("assets/beastsprite/Up3.png"),
+	love.graphics.newImage("assets/beastsprite/Up4.png")
+}
+
 local beast = Class(  --constructor
 		function(self, location, rgba, allele1, allele2)
 			self.body = CollisionCircle(consts.COLRADIUS, location, rgba)
@@ -111,6 +136,7 @@ end
 
 function beast:fireWeapon()  --doesnt actually fire the weapon
 	self.ageLastFire = self.age
+	Sound:playMad()
 end
 			
 function beast:update(dt)  --returns true if a weapon fired
@@ -132,10 +158,51 @@ function beast:update(dt)  --returns true if a weapon fired
 	return false
 end
 
+function beast:drawSprite(sprite, u0, scale)
+	local uLocat =  self.stepLocat + ((u0^.5) * (self.destination-self.stepLocat))
+	local xOff = sprite:getWidth()/2
+	local yOff = sprite:getHeight()/2 + 17 
+	local wtf = 90
+	if (scale == 1) then wtf = 1 end
+	love.graphics.draw(sprite, uLocat.x, uLocat.y - yOff, wtf,1,scale, scale)
+end
+
+function beast:drawSide()
+	love.graphics.setColor(255,255,255,255)
+	local u0 = self.stepProgress + .05
+	local u1 = self.stepProgress
+	local u2 = self.stepProgress - .05
+	local u3 = self.stepProgress - .1
+
+	if(u0 > 1) then u0 = 1 end
+	if(u2 < 0) then u2 = 0 end
+	if(u3 < 0) then u3 = 0 end
+
+
+	local scale = -1
+	if(self.stepLocat.x > self.destination.x) then  scale = 1 end
+
+
+	self:drawSprite(leftSprite[5], u0, scale)
+	
+	love.graphics.setColor(self.body.rgba)
+	self:drawSprite(leftSprite[4], u3, scale)
+	self:drawSprite(leftSprite[3], u2, scale)
+	self:drawSprite(leftSprite[2], u1, scale)
+	self:drawSprite(leftSprite[1], u0, scale)
+
+	love.graphics.setColor(255,255,255,255)
+	self:drawSprite(leftSprite[6], u1, scale)
+	self:drawSprite(leftSprite[7], u0, scale)
+
+end
+
 function beast:draw()
 	if(consts.DEBUG) then
 		self.body:draw()
 	end
+
+	self:drawSide()
 end
 
 return beast
