@@ -36,7 +36,7 @@ function beastSchool:checkBoundary(beast) --keeps a beast inside game bounds
 	local dest = Vector(1,1) 	
 	
 	--prevents game from getting too stale. causes a chase to happen
-	if(beast:horny() and beast.stepProgress >= .96) then
+	if(beast:horny() and #self.school > 1 and beast.stepProgress >= .96) then
 		target = math.random(#self.school) 
 		dest = self.school[target]:gLocation()
 		beast:setDestination(dest)

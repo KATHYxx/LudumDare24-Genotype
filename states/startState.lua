@@ -41,7 +41,7 @@ function startState:draw()
 	love.graphics.print("The Omnicide Genotype", 150, 100, 0, 5, 5)
 	love.graphics.printf("Several of these hellbeasts have the Omnicide Genotype\n\n"..
 		" If they have the disease, they will send out waves of death and destruction,"..
-		" Other beasts carry the genotype without suffering its effects, but they can pass it on to their children who can have the disease "..
+		" Other beasts carry the genotype without suffering its effects, but they pass it on to their children who can have the disease "..
 		"\n Destroy all who have the disease AND all who carry the gene. Save the healthy."
 		, consts.SCREEN.x/2-250, 500, 500, "center")
 
